@@ -3,7 +3,7 @@ import { css } from 'emotion';
 import classnames from 'classnames';
 
 import { MyCounter } from './Context'
-import { colors } from './colors'
+import { colors } from './Colors'
 
 class ItemCounter extends Component {
     static contextType = MyCounter;

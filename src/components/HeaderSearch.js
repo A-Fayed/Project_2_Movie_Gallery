@@ -1,7 +1,7 @@
 import React, { Component }from 'react';
 import { css } from 'emotion';
 
-import { SearchContext } from './searchContext';
+import { SearchContext } from './SearchContext';
 
 class HeaderSearch extends Component {
     static contextType = SearchContext;

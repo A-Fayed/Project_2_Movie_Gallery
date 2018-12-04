@@ -28,11 +28,13 @@ export default class Likebtn extends Component {
                 <div 
                     onClick={ () => this.handleClick(this.state.movieId)} 
                         className={classname('likeBtn',css`
+                            cursor: pointer;
                             display: inline-block;
                             color: white;
                             font-size: 12px;
                             background-color: #1db4c9;
                             border-radius:6px;
+                            height: 28px;
                         `)}>
 
                     <span 

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { css } from 'emotion';
 import classname from 'classnames';
-import { colors } from './colors';
+import { colors } from './Colors';
 
 export default class PageTitle extends Component {
     render(){

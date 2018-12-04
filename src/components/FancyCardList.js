@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { css } from 'emotion';
 import classname from 'classnames';
 import FancyCard from './FancyCard';
-import { SearchContext } from './searchContext';
+import { SearchContext } from './SearchContext';
 
 
 export default class FabcyCardList extends Component {
@@ -35,6 +35,7 @@ export default class FabcyCardList extends Component {
             rating= {movie.rating}
             discription= {movie.discription}
             img= {movie.img}
+            link= {`/movie/${movie.id}`}
             /> )
     }
 
@@ -47,7 +48,7 @@ export default class FabcyCardList extends Component {
             searchedtext
         } = this.state
         
-        this.context.searchQuery.length > 0 && console.log(this.state.newMovie);
+        this.context.searchQuery.length > 0 && console.log(movies);
         
         return(
             <>
@@ -58,7 +59,11 @@ export default class FabcyCardList extends Component {
                             justify-content:space-evenly;
                             max-width: 1000px;
                             margin: 0 auto;
-                            transition: all ease-in-out 0.5s;
+                            transition: grid-template-columns ease-in-out 1s;
+
+                            @media ( max-width: 900px) {
+                                grid-template-columns: repeat(3, 1fr);
+                            }
                             `}>
 
                     {  

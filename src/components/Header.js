@@ -1,12 +1,13 @@
 import React from 'react';
 import { Component } from 'react';
 import { css } from 'emotion';
+
 import Logo from './Logo';
 import Navmenu from './Navmenu';
 import HeaderSearch from './HeaderSearch';
 import ItemCounter from './ItemCounter';
-import { colors } from './colors'
-// import { colors } from '../../../../Day 16 ( Final Day react )/levelup/src/variables'; How did vs automatiaclly got the path ???!!!
+import { colors } from './Colors';
+
 
 
 class Header extends Component {
@@ -18,6 +19,7 @@ class Header extends Component {
                     background-color: white;
                     position: relative;
                     box-shadow: 0 -2px 10px ;
+                    z-index: 5;
                     `}>
                     <div className={css`
                         display:flex;

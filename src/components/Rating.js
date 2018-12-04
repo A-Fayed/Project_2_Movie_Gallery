@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { css } from 'emotion';
 import PropTypes from 'prop-types';
 import classname from 'classnames'; 
-import { colors } from "./colors";
+import { colors } from "./Colors";
 
 class Rating extends Component {
   static propTypes = {

@@ -1,14 +1,11 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
 import './App.css';
-import Header from './components/Header' ;
-import Rating from './components/Rating';
-import SimpleCard from './components/SimpleCard';
-import FancyCard from './components/FancyCard';
-import DiscoverPage from './components/DiscoverPage';
-import MyCounter from './components/Context';
-import { MyProvider } from './components/Context';
-import { SearchProvider } from './components/searchContext';
+import Header from './Components/Header' ;
+import { MyProvider } from './Components/Context';
+import { SearchProvider } from './Components/SearchContext';
+import DetailsPage from './Components/DetailsPage';
+import DiscoverPage from './Components/DiscoverPage'
+import { Router } from '@reach/router';
 
 
 
@@ -21,7 +18,10 @@ class App extends Component {
         <SearchProvider>
           <>
             <Header />
-            <DiscoverPage />
+            <Router>
+              <DiscoverPage path="/" />
+              <DetailsPage path="/movie/:movieId" />
+            </Router>
           </>
         </SearchProvider>
       </MyProvider>
