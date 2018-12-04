@@ -8,6 +8,8 @@ import Likebtn from './LikeBtn';
 import { colors } from './Colors';
 import Spinner from './Spinner';
 import { Link } from '@reach/router';
+import LazyLoad from 'react-lazyload';
+
 
 
 
@@ -84,24 +86,26 @@ class FancyCard extends Component {
                         box-shadow: ${ imgloading ? '0 0 5.5px 0.05px rgba(0,0,0,0.15)' : 'none'};
                         `}>
                     { imgloading && <Spinner /> }
-                    <img
-                        onLoad={handleImageLoaded} 
-                        src={img} 
-                        alt={title}
-                        className={classname('fancyCard__img',css`
-                            width: 100%;
-                            border-radius: 15px;
-                            z-index: 1;
-                            transition: all 500ms cubic-bezier(0.86, 0.05, 0.29, 0.88);
-                            display: ${ imgloading ? 'none' : ''};
-                            cursor: pointer;
+                    <LazyLoad height={200} once>
+                        <img
+                            onLoad={handleImageLoaded} 
+                            src={img} 
+                            alt={title}
+                            className={classname('fancyCard__img',css`
+                                width: 100%;
+                                border-radius: 15px;
+                                z-index: 1;
+                                transition: all 500ms cubic-bezier(0.86, 0.05, 0.29, 0.88);
+                                display: ${ imgloading ? 'none' : ''};
+                                cursor: pointer;
 
-                            div:hover > & {
-                                transform: rotateY(180deg);
-                            }
-                        `)}
-                        >
-                    </img>
+                                div:hover > & {
+                                    transform: rotateY(180deg);
+                                }
+                            `)}
+                            >
+                        </img>
+                    </LazyLoad>
                 
                     
                     <span 

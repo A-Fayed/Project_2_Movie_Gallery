@@ -3,16 +3,19 @@ import Rating from './Rating';
 import { css } from 'emotion';
 import classname from 'classnames';
 import PropTypes from 'prop-types';
+import LazyLoad from 'react-lazyload';
+import Spinner from "./Spinner";
 import { Link } from '@reach/router';
+import { MyProvider } from "./Context";
 
 
-class SimpleCard extends Component {
+
+class SimpleCard extends React.PureComponent {
     static propTypes = {
         id: PropTypes.number,
         title: PropTypes.string,
         rating: PropTypes.number,
         Image: PropTypes.string,
-        link: PropTypes.string
     }
 
     static propsDefault = {
@@ -20,11 +23,11 @@ class SimpleCard extends Component {
         title: '',
         rating: 0,
         Image: '',
-        link: ''
     }
 
     state = {
-        hover: false
+        hover: false,
+        loaded: false
     }
 
     handlehover = () => {
@@ -32,27 +35,38 @@ class SimpleCard extends Component {
             hover: !this.state.hover
         })
     }
+
+    handleload = () => {
+        this.setState({
+            loaded: true
+        })
+    }
     render(){
 
         let {
-            id,
             title,
             rating,
             Image,
             link,
+            onClick
         } = this.props
 
+        let { 
+            handleload,
+            handlehover 
+        } = this
+
+        console.log(onClick)
         return (
             <>
-                <Link to={`/movie/${id}`}>
-                    <div 
-                        onClick={console.log(link)}
-                        onMouseEnter={this.handlehover}
-                        onMouseLeave={this.handlehover} 
+                    <div  
+                        onClick={onClick}  
+                        onMouseEnter={handlehover}
+                        onMouseLeave={handlehover} 
                         className={classname('simpleCard',css`
-                            width: 200px;
+                            max-width: 200px;
                             cursor: pointer;
-                            height: 300px;
+                            height: ${!this.state.loaded ? '300px' : 'auto'};
                             border-radius: 15px;
                             position: relative;
                             text-align: center;
@@ -83,20 +97,26 @@ class SimpleCard extends Component {
                                 `)}
                             >
 
-                        <img 
-                            className={classname('simpleCard__img',css`
-                                width: 100%;
-                                border-radius: inherit;
-                                z-index: 1;
-                                transition: all ease-in-out 0.5s;
+                        { !this.state.loaded && <Spinner/>}
+                        <LazyLoad height={200} once>
+                            <img 
+                                onLoad={ handleload }
+                                className={classname('simpleCard__img',css`
+                                    width: 100%;
+                                    display: block;
+                                    border-radius: inherit;
+                                    z-index: 1;
+                                    transition: all ease-in-out 0.5s;
+                                    display: ${ this.state.loaded ? 'hidden' : 'none'};
 
-                                &:hover {
-                                }
+                                    &:hover {
+                                    }
 
-                            `)} 
-                            src={Image} 
-                            alt={title}>
-                        </img>
+                                `)} 
+                                src={Image} 
+                                alt={title}>
+                            </img>
+                        </LazyLoad>
 
                         <h5 
                             className={classname('simpleCard__title',css`
@@ -136,7 +156,6 @@ class SimpleCard extends Component {
                             <Rating  max={10} value={5} rating={rating}></Rating>
                         </div>
                     </div>
-                </Link>
             </>
         )
     }

@@ -57,7 +57,7 @@ export default class DiscoverPage extends Component {
         let {items, isLoaded} = this.state;
         return (
             <>
-                <PageTitle />
+                <PageTitle pageTitle='Discover' />
                 <FancyCardList movies= {items} />
                 <LoadBtn isLoaded={isLoaded} onClick={this.loadMore} />
             </>

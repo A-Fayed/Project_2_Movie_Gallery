@@ -1,5 +1,4 @@
 import React, {  Component } from 'react';
-import classname from 'classnames';
 import { css } from 'emotion';
 
  class LoadBtn extends Component {

@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { css } from 'emotion';
-import classname from 'classnames';
 import FancyCard from './FancyCard';
 import { SearchContext } from './SearchContext';
 

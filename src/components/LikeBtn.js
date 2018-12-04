@@ -48,6 +48,7 @@ export default class Likebtn extends Component {
                     </span>
                     <span 
                         className={classname('likeBtn__Action',css`
+                            height: inherit;
                             font-size: 12px;
                             padding: 6px;
                             display: inline-block;

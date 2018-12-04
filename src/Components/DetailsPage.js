@@ -8,9 +8,13 @@ import Rating from './Rating';
 import Likebtn from './LikeBtn';
 import { colors } from './Colors';
 import SimpleCard from './SimpleCard';
+import Spinner from "./Spinner";
+import { Link } from '@reach/router';
 
 
-export default class DetailsPage extends Component {
+
+
+export default class DetailsPage extends React.PureComponent {
   static propTypes = {
     movies: PropTypes.string
   };
@@ -22,8 +26,9 @@ static defaultProps = {
 state = {
   movie: {},
   movieCast: [],
-  similarMoviesLoading: true,
-  similarMovies: []
+  Loading: true,
+  similarMovies: [],
+  movieURL: ''
 }
 
 handleMovieDetails = (details) => {
@@ -37,7 +42,7 @@ handleMovieDetails = (details) => {
       releaseDate: details.release_date,
       genres: details.genres
     }
-  })
+  }, () => console.log(this.state.movie.genres[0]))
 }
 
 handleMovieCast = (castData) => {
@@ -55,7 +60,7 @@ handleSimilarMovies = (similarMovies) => {
           title: movie.title,
           description : movie.overview,
           rating: movie.vote_average,
-          Image: getImageURL(movie.poster_path),
+          Image: getImageURL(movie.poster_path, 'w342'),
           releaseDate: movie.release_date
         })
       )
@@ -63,11 +68,24 @@ handleSimilarMovies = (similarMovies) => {
   })
 }
 
+handleMovieURL = (movie) => {
+  this.setState({
+    movieURL: movie.id
+  }, console.log(this.state.movieURL))
+  
+}
+
+handleLoad = () => {
+  this.setState({
+    Loading: false
+  })
+}
+
 componentDidMount () {
   let { movieId } = this.props
   api.getMovie(movieId).then(this.handleMovieDetails)
   api.getCredits(movieId).then( data => this.handleMovieCast(data.cast.slice(0, 4)))
-  api.getSimilarMovies(movieId).then( data => this.handleSimilarMovies(data.results.slice(0, 8)))
+  api.getSimilarMovies(movieId).then( data => this.handleSimilarMovies(data.results.slice(0, 9)))
 }
 
   render () {
@@ -77,17 +95,27 @@ componentDidMount () {
       rating,
       coverImage,
       releaseDate,
+      genres
     } = this.state.movie
 
-    console.log(this.props)
 
     let { 
       movieCast,
-      similarMovies
+      similarMovies,
+      Loading
     } = this.state 
+
+    let { handleLoad } = this
+
     
     return (
         <>
+          {Loading && <Spinner className={css`
+            transform: scale(2);
+            `}/>}
+        <main className={css`
+          display: ${ !Loading ? 'hidden' : 'none'};
+        `}>
           <div 
             className={css`
               height: auto;
@@ -105,20 +133,21 @@ componentDidMount () {
               {title}</h2>
 
               <div className={css`
+                position: relative;
                 &:after {
                   position: absolute;
                   content:'';
                   top: 0;
-                  bottom: 100px;
+                  bottom: 0;
                   right: 0;
                   left: 0;
                   background-image: linear-gradient(rgba(255 ,255 ,255 ,0), black);
                   opacity: 0.55;
                   transition: all ease-in-out 0.75s;
                 }`}>
-
                   <img 
                     src={coverImage} 
+                    onLoad={ handleLoad }
                     alt='test' 
                     className={css`
                       width: 100%;
@@ -167,8 +196,38 @@ componentDidMount () {
                 </div>
                 <Likebtn />
               </div>
-              <div>
+              <div className={css`
+                display: flex;
+                margin-right: auto;
+                margin-left: auto;
+
+                `}>
                 <h3>Genres</h3>
+                <div className={css`
+                  margin-left: auto;
+                  `}>
+                  {
+                    !Loading && genres.map(genre =>
+                    <Link 
+                      to={`/genres/${genre.id}/${genre.name}`}
+                      className={css`
+                        color: black;
+                        height: 28px;
+                        padding: 2px 12px;
+                        background-color: ${colors.lightGrey};
+                        border-radius: 5px;
+                        text-decoration: none;
+                        font-weight: bold;
+                        font-size: 12px;
+                        margin-left: 15px;                      
+                        `}
+                      >
+                      {genre.name}
+                    </Link>
+                    )
+                  }
+                </div>
+
               </div>
               <div>
                 <h3>Overview</h3>
@@ -182,10 +241,11 @@ componentDidMount () {
                     `}>
                   {
                     movieCast.map((castProfile, index) => 
-                    <div className={css`
+                    <div
+                      key={index} 
+                      className={css`
                         padding: 20px 0;
                         text-align: center;
-
                         `}>
                         <img
                           src={getImageURL(castProfile.profile_path)}
@@ -230,11 +290,12 @@ componentDidMount () {
                     padding-top: 20px;
                       `}>
                   {
-                    similarMovies.map(movie => <SimpleCard key={movie.id} {...movie} link={`/movie/${movie.id}`} />)
+                    similarMovies.map(movie => <SimpleCard key={movie.id} {...movie} />)
                   }
                 </div>
               </div>
           </div>
+        </main>
         </>
       ) 
   }

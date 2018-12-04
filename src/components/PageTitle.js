@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import { css } from 'emotion';
-import classname from 'classnames';
 import { colors } from './Colors';
 
 export default class PageTitle extends Component {
     render(){
+        let { pageTitle } = this.props;
         return(
             <>
                 <div className={css`
@@ -20,7 +20,7 @@ export default class PageTitle extends Component {
                         font-weight: normal;
                         margin-top: 0;
                         `}>
-                        Discover</h2>
+                        {pageTitle}</h2>
                 </div>
             </>
         )

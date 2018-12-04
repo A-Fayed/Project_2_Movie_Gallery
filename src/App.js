@@ -4,11 +4,9 @@ import Header from './Components/Header' ;
 import { MyProvider } from './Components/Context';
 import { SearchProvider } from './Components/SearchContext';
 import DetailsPage from './Components/DetailsPage';
-import DiscoverPage from './Components/DiscoverPage'
+import DiscoverPage from './Components/DiscoverPage';
+import GenresPage from './Components/GenresPage';
 import { Router } from '@reach/router';
-
-
-
 
 class App extends Component {
   render() {
@@ -21,6 +19,7 @@ class App extends Component {
             <Router>
               <DiscoverPage path="/" />
               <DetailsPage path="/movie/:movieId" />
+              <GenresPage path="/genres/:genreId/:genreName" />
             </Router>
           </>
         </SearchProvider>
