@@ -29,6 +29,8 @@
     "emotion": "^9.2.12",
     "node-sass": "^4.10.0",
     "react-lazyload": "^2.3.0",
+    "react-redux": "^5.1.1",
+    "redux": "^4.0.1",
     "styled-components": "^4.1.1"
   }
 }
