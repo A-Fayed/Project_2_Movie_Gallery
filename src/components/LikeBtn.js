@@ -6,27 +6,19 @@ import { MyCounter } from './Context';
 
 export default class Likebtn extends Component {
     state = {
-        savedMovie: false,
         movieId: this.props.movieId
     }
 
-    static contextType = MyCounter;
 
-    handleClick = (movieId) => {
-        this.state.savedMovie ?  this.context.removeMovie(movieId) : this.context.addMovie(movieId) 
-        console.log(this.context)
-        this.setState({
-            savedMovie: !this.state.savedMovie
-        })
-
+    handleClick = () => {
+        this.props.handleButton();
     }
+
     render() {
-        let {savedMovie} = this.state 
         return (
-            
             <>
                 <div 
-                    onClick={ () => this.handleClick(this.state.movieId)} 
+                    onClick={ () => this.handleClick()} 
                         className={classname('likeBtn',css`
                             cursor: pointer;
                             display: inline-block;
@@ -44,7 +36,7 @@ export default class Likebtn extends Component {
                                 border-radius:  6px 0 0 6px;
                                 transition: all ease-in-out 0.5s;
                             `)}>
-                        <i  className= {savedMovie ? "fas fa-check" : "fa fa-heart"}></i>
+                        <i  className= {this.props.savedMovie ? "fas fa-check" : "fa fa-heart"}></i>
                     </span>
                     <span 
                         className={classname('likeBtn__Action',css`
@@ -58,7 +50,7 @@ export default class Likebtn extends Component {
                             min-width: 90px;
                             transition: all ease-in-out 0.5s;
                         `)}>
-                        {savedMovie ?'Favorite' :'Save Movie' }
+                        {this.props.savedMovie ?'Favorite' :'Save Movie' }
                     </span>
                 </div>
             </>

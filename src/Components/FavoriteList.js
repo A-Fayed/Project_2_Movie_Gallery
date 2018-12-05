@@ -41,23 +41,16 @@ class FavoriteList extends React.PureComponent {
     root.remove();
   }
 
-  
   render () {
     
     let {
       visible,
       onClose
       } = this.props
-
-      let { savedMovies } = this.state
     
     if ( !visible ) {
       return null
     }
-
-    console.log(this.props.savedMovies)
-    console.log(savedMovies)
-
     
     return (
       ReactDOM.createPortal (
@@ -85,7 +78,7 @@ class FavoriteList extends React.PureComponent {
           `}
           >
             {
-              savedMovies.map(movie => <FancyCard key={movie.id} {...movie} />)
+              this.state.savedMovies.map(movie => <FancyCard key={movie.id} {...movie}/>)
             }
         </div>
         <div 

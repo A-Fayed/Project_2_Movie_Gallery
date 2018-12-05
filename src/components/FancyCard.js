@@ -21,7 +21,8 @@ class FancyCard extends Component {
         rating: PropTypes.number,
         discription: PropTypes.string,
         link: PropTypes.string,
-        img: PropTypes.string
+        img: PropTypes.string,
+        saved: PropTypes.bool
     }
 
     static propsDefault = {
@@ -30,7 +31,8 @@ class FancyCard extends Component {
         rating: 0,
         discription: '',
         img: '',
-        link: ''
+        link: '',
+        saved: false
     }
 
     state = {
@@ -41,28 +43,27 @@ class FancyCard extends Component {
             discription: this.props.discription,
             img: this.props.img,
             link: this.props.link,
+            saved: false
         },
-        imgloading: true
-    }
+        imgloading: true,
+    };
 
     handleImageLoaded = () => {
         this.setState({
             imgloading: false
-        })
+        });
     }
 
-    handlesave = (movie) => {
-        if (!this.props.testStateMoviesId.find(m => m.id === movie.id )) {
-            this.props.testAddMovie(this.state.movie)
-        } else {
-            this.props.testRemoveMovie(this.state.movie)
-        }
+    handleButton = () => {
+        this.setState( state => ({
+            saved: !state.saved,
+            movie: {...this.state.movie, saved: !state.saved }
+        }));
+        this.state.movie.saved ? this.props.testRemoveMovie(this.state.movie) : this.props.testAddMovie(this.state.movie)
     }
-
 
     render(){
         let {
-            id,
             title,
             rating,
             discription,
@@ -70,10 +71,14 @@ class FancyCard extends Component {
             link
         } = this.state.movie
 
-        let { imgloading } = this.state
+        let { 
+            imgloading,
+        } = this.state
 
-        let { handleImageLoaded, handlesave } = this;
-        console.log(this.props.testStateMoviesId)
+        let { 
+            handleImageLoaded,
+            handleButton
+         } = this;
 
         return(
         <div 
@@ -118,7 +123,6 @@ class FancyCard extends Component {
                             >
                         </img>
                     </LazyLoad>
-                
                     
                     <span 
                     className={css`
@@ -171,7 +175,12 @@ class FancyCard extends Component {
                     </span>
                 </div>
             </Link>
-        
+            <Link 
+                to={link}
+                className={css`
+                    text-decoration: none;
+                `}
+            >
             <h5 
                 className={classname('fancyCard__title',css`
                     line-height: 1.3;
@@ -190,6 +199,7 @@ class FancyCard extends Component {
                     }
                 `)}>
                 {title}</h5>
+            </Link>
         
             <div 
                 className={classname('fancyCard__rating',css`
@@ -207,7 +217,7 @@ class FancyCard extends Component {
                 </Rating>
             </div>
 
-            <Likebtn movieId={id} />
+            <Likebtn handleButton={handleButton} movie={this.state.movie} savedMovie={this.state.saved} />
 
 
             <div 
@@ -228,7 +238,7 @@ class FancyCard extends Component {
                 }
 
                 `}></div>
-                <button onClick={() => handlesave(this.state.movie)}> Test Add</button>
+
         </div>
         )
     }
@@ -246,5 +256,4 @@ const mapDispatchToProps = (dispatch) => {
         testRemoveMovie: (movie) => dispatch({type: 'REMOVE_MOVIE', movie: movie })
     }
 }
-
 export default connect(mapStateToProps, mapDispatchToProps)(FancyCard);
