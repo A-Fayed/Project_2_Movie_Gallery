@@ -9,6 +9,7 @@ import { colors } from './Colors';
 import Spinner from './Spinner';
 import { Link } from '@reach/router';
 import LazyLoad from 'react-lazyload';
+import { connect } from 'react-redux';
 
 
 
@@ -33,19 +34,29 @@ class FancyCard extends Component {
     }
 
     state = {
-        id: this.props.id,
-        title: this.props.title,
-        rating: this.props.rating,
-        discription: this.props.discription,
-        img: this.props.img,
-        link: this.props.link,
+        movie: {
+            id: this.props.id,
+            title: this.props.title,
+            rating: this.props.rating,
+            discription: this.props.discription,
+            img: this.props.img,
+            link: this.props.link,
+        },
         imgloading: true
     }
 
     handleImageLoaded = () => {
         this.setState({
             imgloading: false
-        },() => console.log(this.state.link))
+        })
+    }
+
+    handlesave = (movie) => {
+        if (!this.props.testStateMoviesId.find(m => m.id === movie.id )) {
+            this.props.testAddMovie(this.state.movie)
+        } else {
+            this.props.testRemoveMovie(this.state.movie)
+        }
     }
 
 
@@ -56,11 +67,13 @@ class FancyCard extends Component {
             rating,
             discription,
             img,
-            link,
-            imgloading
-        } = this.state
+            link
+        } = this.state.movie
 
-        let { handleImageLoaded } = this;
+        let { imgloading } = this.state
+
+        let { handleImageLoaded, handlesave } = this;
+        console.log(this.props.testStateMoviesId)
 
         return(
         <div 
@@ -75,7 +88,6 @@ class FancyCard extends Component {
                 <div 
                     className={css`
                         overflow: hidden;
-                        display: inline-block;
                         width: 200px;
                         height: 300px;
                         border-radius:15px;
@@ -216,9 +228,23 @@ class FancyCard extends Component {
                 }
 
                 `}></div>
+                <button onClick={() => handlesave(this.state.movie)}> Test Add</button>
         </div>
         )
     }
 }
 
-export default FancyCard;
+const mapStateToProps = (state) => {
+    return {
+        testStateMoviesId:  state.savedMovies
+    }
+}
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        testAddMovie : (movie) => dispatch({type: 'ADD_MOVIE', movie: movie }),
+        testRemoveMovie: (movie) => dispatch({type: 'REMOVE_MOVIE', movie: movie })
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(FancyCard);

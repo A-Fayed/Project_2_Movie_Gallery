@@ -1,12 +1,11 @@
-import React, { Component } from "react";
+import React from "react";
 import Rating from './Rating';
 import { css } from 'emotion';
 import classname from 'classnames';
 import PropTypes from 'prop-types';
 import LazyLoad from 'react-lazyload';
 import Spinner from "./Spinner";
-import { Link } from '@reach/router';
-import { MyProvider } from "./Context";
+
 
 
 

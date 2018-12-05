@@ -7,6 +7,7 @@ import DetailsPage from './Components/DetailsPage';
 import DiscoverPage from './Components/DiscoverPage';
 import GenresPage from './Components/GenresPage';
 import { Router } from '@reach/router';
+import Test from './Components/TestComponent'
 
 class App extends Component {
   render() {

@@ -1,35 +1,48 @@
 import React, {  Component } from 'react';
 import { css } from 'emotion';
 import classnames from 'classnames';
+import { connect } from 'react-redux';
+import FavoriteList from './FavoriteList';
+
 
 import { MyCounter } from './Context'
-import { colors } from './Colors'
+import { colors } from './Colors';
+
 
 class ItemCounter extends Component {
     static contextType = MyCounter;
     
     static defaultProps = {
         max: 10,
-        value:9,
-    }
+        value: 9,
+    };
     
     state = {
         itemNumber: 0,
         max: this.props.max,
         value: this.props.value,
-        radius: 15
+        radius: 15,
+        FavoriteListVisible: false
+    };
+
+    handleClick = () => {
+        this.setState((state) =>  ({
+            FavoriteListVisible: !state.FavoriteListVisible
+        }));
     }
 
-
     render() {
-        let value = this.context.state.savedMoviesId.length;
-        let {max, radius} = this.state
+        let value = this.props.movies.length;
+        let {max, radius, FavoriteListVisible} = this.state
         let percent = (value/max)*100;
 
         let cirleDiameter = radius * 2.5;
         let circleThickness = radius * 0.18;
         let counterDimension = circleThickness + cirleDiameter + 2;
 
+        const { handleClick } = this
+
+        console.log(this.props.movies)
 
         return (
             <>
@@ -38,7 +51,7 @@ class ItemCounter extends Component {
                         display:flex;
                         align-items:center;
                         margin-left:auto;
-                    `} onClick={this.handleClick}>
+                    `}>
 
                     <span 
                         className={css`
@@ -51,12 +64,14 @@ class ItemCounter extends Component {
                             background-color: ${colors.primaryColor};
                             border-radius: 99px;
                             color:white;
-                        `}> {this.context.state.savedMoviesId.length} </span>
+                        `}> {this.props.movies.length} </span>
 
                     <div 
+                        onClick={handleClick}
                         className={classnames('circle', css`
                             display:inline-block;
                             position: relative;
+                            cursor: pointer;
                      `)}>
 
                         <svg 
@@ -114,10 +129,25 @@ class ItemCounter extends Component {
                             `)} >
                         </i>
                     </div>
+                    {
+                        FavoriteListVisible && 
+                        <FavoriteList 
+                            visible= {FavoriteListVisible}
+                            onClose={() => this.setState({FavoriteListVisible:false})}
+                            />
+                    }
+                    
                 </div>
             </>
         )
     }
 }
 
-export default ItemCounter;
+const mapStateToProps = (state) => {
+    return {
+      movies: state.savedMovies
+    }
+  }
+
+
+export default connect(mapStateToProps)(ItemCounter);
