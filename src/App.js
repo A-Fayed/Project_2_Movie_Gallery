@@ -1,13 +1,15 @@
 import React, { Component } from 'react';
 import './App.css';
-import Header from './Components/Header' ;
 import { MyProvider } from './Components/Context';
 import { SearchProvider } from './Components/SearchContext';
 import DetailsPage from './Components/DetailsPage';
 import DiscoverPage from './Components/DiscoverPage';
 import GenresPage from './Components/GenresPage';
-import { Router } from '@reach/router';
-import Test from './Components/TestComponent'
+import {
+  BrowserRouter as Router,
+  Route
+} from 'react-router-dom';
+
 
 class App extends Component {
   render() {
@@ -15,14 +17,13 @@ class App extends Component {
       <>
       <MyProvider>
         <SearchProvider>
-          <>
-            <Header />
             <Router>
-              <DiscoverPage path="/" />
-              <DetailsPage path="/movie/:movieId" />
-              <GenresPage path="/genres/:genreId/:genreName" />
+              <>
+                <Route exact path='/' component={DiscoverPage}></Route>
+                <Route path='/movie/:movieId' component={DetailsPage}></Route>
+                <Route path='/genres/:genreId?/:genreName?' component={GenresPage}></Route> 
+              </>
             </Router>
-          </>
         </SearchProvider>
       </MyProvider>
       </>

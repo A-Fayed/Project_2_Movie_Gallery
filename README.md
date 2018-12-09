@@ -10,6 +10,7 @@ Features:
   - Adding movies to Favorite movies list by clicking save movie
   - clicking on upper right item counter will open side panel for favorite movies ( still inprogress)
   - Search bar is working on Main page menu
+  - All fetched images are lazy loaded
 
 Notes: 
   - this project was orginally made by Context API and then mitigated to redux 

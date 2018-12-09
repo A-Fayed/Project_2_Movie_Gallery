@@ -42,8 +42,6 @@ class ItemCounter extends Component {
 
         const { handleClick } = this
 
-        console.log(this.props.movies)
-
         return (
             <>
                 <div 

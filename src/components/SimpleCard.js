@@ -5,6 +5,7 @@ import classname from 'classnames';
 import PropTypes from 'prop-types';
 import LazyLoad from 'react-lazyload';
 import Spinner from "./Spinner";
+import { Link } from 'react-router-dom';
 
 
 
@@ -43,10 +44,10 @@ class SimpleCard extends React.PureComponent {
     render(){
 
         let {
+            id,
             title,
             rating,
             Image,
-            link,
             onClick
         } = this.props
 
@@ -55,9 +56,9 @@ class SimpleCard extends React.PureComponent {
             handlehover 
         } = this
 
-        console.log(onClick)
         return (
-            <>
+            <>  
+                <Link to={`/movie/${id}`}>
                     <div  
                         onClick={onClick}  
                         onMouseEnter={handlehover}
@@ -155,6 +156,7 @@ class SimpleCard extends React.PureComponent {
                             <Rating  max={10} value={5} rating={rating}></Rating>
                         </div>
                     </div>
+                </Link>
             </>
         )
     }

@@ -5,6 +5,8 @@ import PropTypes from 'prop-types';
 import api from '../utils/api'; 
 import { getImageURL } from '../utils/helpers';
 import LoadBtn from './LoadBtn';
+import Header from './Header';
+
 
 
 export default class DiscoverPage extends Component {
@@ -57,8 +59,9 @@ export default class DiscoverPage extends Component {
         let {items, isLoaded} = this.state;
         return (
             <>
+                <Header />
                 <PageTitle pageTitle='Discover' />
-                <FancyCardList movies= {items} />
+                <FancyCardList isLoaded={isLoaded} movies= {items} />
                 <LoadBtn isLoaded={isLoaded} onClick={this.loadMore} />
             </>
         )

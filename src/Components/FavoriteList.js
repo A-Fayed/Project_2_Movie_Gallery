@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 import { css } from 'emotion';
 import { connect } from 'react-redux';
 import FancyCard from './FancyCard';
-import store from './Store';
 
 const root = document.createElement('div');
 root.id = 'Rootroot'

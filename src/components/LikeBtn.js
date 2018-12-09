@@ -2,8 +2,6 @@ import React, {  Component } from 'react';
 import classname from 'classnames';
 import { css } from 'emotion';
 
-import { MyCounter } from './Context';
-
 export default class Likebtn extends Component {
     state = {
         movieId: this.props.movieId

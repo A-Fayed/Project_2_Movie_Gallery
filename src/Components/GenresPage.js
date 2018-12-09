@@ -6,6 +6,11 @@ import api from '../utils/api';
 import { getImageURL } from '../utils/helpers';
 import LoadBtn from './LoadBtn';
 import SimpleCard from './SimpleCard';
+import { Link } from 'react-router-dom';
+import { uuid } from 'uuid/v4';
+import Header from './Header';
+import { colors } from './Colors';
+
 
 export default class GenresPage extends Component {
   static propTypes = {
@@ -17,15 +22,18 @@ export default class GenresPage extends Component {
   }
 
   state = {
+    genreId: '',
+    genreName: '',
     genreMovies: [],
     isLoaded: true,
     page: 0,
+    genresTypes: []
   }
 
   loadMore = () => {
     this.setState({
         isLoaded: false,
-    }, () => api.getMoviesFromGenre(this.props.genreID, {
+    }, () => api.getMoviesFromGenre(this.props.match.params.genreId, {
         page: this.state.page + 1})
         .then(this.handleMovies))
 }
@@ -34,7 +42,7 @@ export default class GenresPage extends Component {
     this.setState({
       isLoaded: true,
       page: data.page,
-      genreMovies: [
+      genreMovies: data.page > 1 ? [
         ...this.state.genreMovies,
         ...data.results.map( movie => ({
           id: movie.id,
@@ -44,27 +52,66 @@ export default class GenresPage extends Component {
           Image: getImageURL(movie.poster_path, 'w342')
         })
         )
+      ] : [
+        ...data.results.map( movie => ({
+          id: movie.id,
+          title: movie.title,
+          rating: movie.vote_average,
+          discription: movie.overview,
+          Image: getImageURL(movie.poster_path, 'w342')
+        })
+        )
       ]
-    }, () => console.log(this.props.genreId))
+    })
   }
+
+  handleGenres = (data) => {
+    this.setState({ 
+      genresTypes: data.genres
+    }, () => console.log(this.state))
+  }
+
+  componentDidUpdate(prevProps) {
+    if (this.props.match.params.genreId !== prevProps.match.params.genreId) {
+      console.log(this.props)
+      this.getData(this.props);
+    }
+  }
+
+ getData () {
+   let { genreId } = this.props.match.params;
+   genreId && api.getMoviesFromGenre(genreId).then(data => this.handleMovies(data))
+   api.getGenres().then((data) => {this.handleGenres(data); console.log(data)});
+ }
   
   componentDidMount () {
-    api.getMoviesFromGenre(this.props.genreId).then(data => this.handleMovies(data) )
+    this.setState({
+      genreId: this.props.match.params.genreId,
+      genreName: this.props.match.params.genreName
+    }, () => this.getData())
   }
 
   render () {
-    let { genreMovies, isLoaded } = this.state
+    let { 
+      genreMovies,
+      isLoaded,
+      genresTypes 
+    } = this.state
+
+    let { genreName } = this.props.match.params
+
     return (
       <>
-        <PageTitle pageTitle = {`Genre: ${this.props.genreName}`} />
+        <Header />
+        <PageTitle pageTitle = {genreName ? 'Genre: ' + genreName : ' Choose Genre' } />
         <div className={css`
           width: 1000px;
           margin: 0 auto;
-          /* display: grid;
+          display: grid;
           grid-template-columns: repeat(6, 1fr);
-          grid-gap: 20px; */
+          grid-gap: 20px;
           `}>
-          {/* <div className={css`
+          <div className={css`
             display: inline-block;
             background-color: white;
             border-radius: 15px;
@@ -83,28 +130,40 @@ export default class GenresPage extends Component {
                   margin-bottom: 10px;
                 }
                 `}>
-                <li>Actions</li>
-                <li>Adventure</li>
-                <li>Comedy</li>
-                <li>Drama</li>
-                <li>Science Fiction</li>
+                {
+                  genresTypes.map(genre => <li key={genre.id}>
+                    <Link 
+                      to={`/genres/${genre.id}/${genre.name}`} 
+                      onClick={()=>this.setState({})} 
+                      className={css`
+                        color: inherit;
+                        text-decoration: none;
+                        transition: all ease-in-out 0.25s;
+
+                        &:hover {
+                          color: ${colors.primaryColor};
+                          font-weight: bold;
+                    }
+                        `}
+                      >{genre.name}</Link></li> )
+                }
               </ul>
-            </div> */}
+            </div>
             <div 
               className={css`
-                /* grid-row: 1 / 5;
-                grid-column: 2 / 7; */
+                grid-row: 1 / 5;
+                grid-column: 2 / 7;
                 display: grid;
                 grid-template-columns: repeat(4, 1fr);
                 grid-gap: 20px;
 
               `}>
               {
-                genreMovies.map(movie => <SimpleCard {...movie} />)
+                genreMovies.map(movie => <SimpleCard key={uuid} {...movie} />)
               } 
             </div>
         </div>
-        <LoadBtn isLoaded={isLoaded} onClick={this.loadMore} />
+        {genreName && <LoadBtn isLoaded={isLoaded} onClick={this.loadMore} />}
       </>
     )
   }

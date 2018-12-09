@@ -7,7 +7,7 @@ import Rating from './Rating';
 import Likebtn from './LikeBtn';
 import { colors } from './Colors';
 import Spinner from './Spinner';
-import { Link } from '@reach/router';
+import { Link } from 'react-router-dom';
 import LazyLoad from 'react-lazyload';
 import { connect } from 'react-redux';
 
@@ -67,12 +67,12 @@ class FancyCard extends Component {
             title,
             rating,
             discription,
-            img,
-            link
+            img
         } = this.state.movie
 
         let { 
             imgloading,
+            movie
         } = this.state
 
         let { 
@@ -89,7 +89,7 @@ class FancyCard extends Component {
                 text-align: center;
                 transition: all ease-in-out 0.75s; 
             `)}>
-            <Link to={link}>
+            <Link to={`/movie/${movie.id}`}>
                 <div 
                     className={css`
                         overflow: hidden;
@@ -176,7 +176,7 @@ class FancyCard extends Component {
                 </div>
             </Link>
             <Link 
-                to={link}
+                to={`/movie/${movie.id}`}
                 className={css`
                     text-decoration: none;
                 `}
