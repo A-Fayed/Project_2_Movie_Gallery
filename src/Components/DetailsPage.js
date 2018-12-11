@@ -215,7 +215,7 @@ handleSimilarMovies = similarMovies => {
                   Released {releaseDate}</p>
                 </div>
 
-                <Likebtn />
+                <Likebtn movieId={this.props.match.params.movieId} />
               </div>
               <div className={css`
                 display: flex;

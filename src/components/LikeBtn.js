@@ -5,15 +5,14 @@ import { connect } from 'react-redux';
 
 class Likebtn extends Component {
     state = {
-        movieId: this.props.movieId,
         wholeMovie: this.props.movie,
         saved: false
     }
 
     componentDidMount () {
-        const saved = (this.props.FavoriteList.find(m => m.id !== this.state.movieId) !== undefined);
+        const saved = (this.props.FavoriteList.findIndex(m => m.id === this.props.movieId) !== -1);
         this.setState({
-            saved
+            saved: saved
         })
     }
     

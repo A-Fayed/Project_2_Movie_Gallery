@@ -215,6 +215,7 @@ class FancyCard extends Component {
         <Likebtn
           handleButton={handleButton}
           movie={this.state.movie}
+          movieId={this.props.id}
           savedMovie={this.state.saved}
         />
 
