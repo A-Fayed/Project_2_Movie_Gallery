@@ -27,8 +27,7 @@ class FavoriteList extends React.PureComponent {
     if(nextProps.savedMovies !== this.props.savedMovies) {
       this.setState({
         savedMovies: [...nextProps.savedMovies]
-      }, () => console.log('CHANGE'))
-       
+      })
     }
   }
   
@@ -74,7 +73,14 @@ class FavoriteList extends React.PureComponent {
                 right: 0;
               }
             } 
+
+            & > div {
+              margin-top: 50px;
+              margin-left: auto;
+              margin-right: auto;
+            }
           `}
+          
           >
             {
               this.state.savedMovies.map(movie => <FancyCard key={movie.id} {...movie}/>)

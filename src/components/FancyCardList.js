@@ -6,6 +6,8 @@ import { SearchContext } from './SearchContext';
 
 
 export default class FabcyCardList extends Component {
+    static contextType = SearchContext;
+
     static propTypes = {
         movies: PropTypes.arrayOf(PropTypes.shape({
             id: PropTypes.number,
@@ -20,13 +22,11 @@ export default class FabcyCardList extends Component {
         movies: [],
     };
 
-    static contextType = SearchContext;
-
     state = {
         searchedtext: this.context.searchQuery,
     }
 
-    turnToCard (movies) {
+    turnMovieToCard (movies) {
     return movies.map( movie =>  <FancyCard
             key= {movie.id} 
             id= {movie.id}
@@ -46,6 +46,10 @@ export default class FabcyCardList extends Component {
         let {
             searchedtext
         } = this.state
+
+        let {
+            turnMovieToCard
+        } = this
         
         this.context.searchQuery.length > 0 && console.log(movies);
         
@@ -66,8 +70,8 @@ export default class FabcyCardList extends Component {
                             `}>
 
                     {  
-                        searchedtext.length > 0 ? this.turnToCard(movies) : 
-                        this.turnToCard(movies.filter(movie => movie.title.replace(/\s/g, "").toLowerCase().includes(this.context.searchQuery)))
+                        searchedtext.length > 0 ? turnMovieToCard(movies) : 
+                        turnMovieToCard(movies.filter(movie => movie.title.replace(/\s/g, "").toLowerCase().includes(this.context.searchQuery)))
                     }
                     
                     {

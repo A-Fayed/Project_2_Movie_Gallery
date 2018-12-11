@@ -9,7 +9,6 @@ const rootReducer = (state = initialState, action) => {
       savedMovies: [
         ...state.savedMovies,
         {...action.movie}]
-      
     }
   } else if ( action.type === 'REMOVE_MOVIE') {
     return {

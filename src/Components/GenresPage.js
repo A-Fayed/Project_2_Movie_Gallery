@@ -99,6 +99,7 @@ export default class GenresPage extends Component {
     } = this.state
 
     let { genreName } = this.props.match.params
+    let { loadMore } = this
 
     return (
       <>
@@ -163,7 +164,7 @@ export default class GenresPage extends Component {
               } 
             </div>
         </div>
-        {genreName && <LoadBtn isLoaded={isLoaded} onClick={this.loadMore} />}
+        {genreName && <LoadBtn isLoaded={isLoaded} onClick={loadMore} />}
       </>
     )
   }

@@ -47,8 +47,7 @@ export default class DiscoverPage extends Component {
                     img: getImageURL(movie.poster_path)
                 }
             })]
-        }, 
-        () => console.log(data))
+        })
     }
 
     componentDidMount () {
@@ -57,12 +56,13 @@ export default class DiscoverPage extends Component {
 
     render () {
         let {items, isLoaded} = this.state;
+        let { loadMore } = this
         return (
             <>
                 <Header />
                 <PageTitle pageTitle='Discover' />
                 <FancyCardList isLoaded={isLoaded} movies= {items} />
-                <LoadBtn isLoaded={isLoaded} onClick={this.loadMore} />
+                <LoadBtn isLoaded={isLoaded} onClick={loadMore} />
             </>
         )
     }
